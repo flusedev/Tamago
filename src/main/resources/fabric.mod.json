@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "tamago",
+  "version": "1.0",
+  "name": "Tamago",
+  "description": "",
+  "authors": [
+    "AlphaMode"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "ioa.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.alphamode.tamago.Tamago"
+    ],
+    "gud_asm": [
+      "me.alphamode.tamago.TamagoASM"
+    ]
+  },
+  "mixins": [
+    "tamago.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": ">=1.20.1"
+  }
+}
