@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -16,6 +16,20 @@ repositories {
         url "https://maven.jamieswhiteshirt.com/libs-release"
         content {
             includeGroup "com.jamieswhiteshirt"
+        }
+    }
+    maven { url = "https://cursemaven.com" }
+    maven { url = "https://maven.tterrag.com/" }
+}
+
+loom {
+    runs {
+        gametestServer {
+            server()
+            name "Headlesss GameTests"
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+            runDir "run/gametest"
         }
     }
 }
@@ -35,7 +49,9 @@ dependencies {
         exclude(group: "io.vram")
     }
 
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.0")))
     include(modImplementation("net.kjp12.junkie:bytecode-junkie:0.3.3"))
+    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
 }
 
 processResources {

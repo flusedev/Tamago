@@ -1,14 +1,18 @@
 {
   "schemaVersion": 1,
   "id": "tamago",
-  "version": "1.0",
+  "version": "${version}",
   "name": "Tamago",
   "description": "",
   "authors": [
     "AlphaMode"
   ],
-  "contact": {},
-  "license": "All-Rights-Reserved",
+  "contact": {
+    "homepage": "https://modrinth.com/mod/tamago",
+    "sources": "https://github.com/AlphaMode/Tamago/",
+    "issues": "https://github.com/AlphaMode/Tamago/issues"
+  },
+  "license": "MIT",
   "icon": "ioa.png",
   "environment": "*",
   "entrypoints": {

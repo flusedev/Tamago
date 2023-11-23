@@ -153,8 +153,6 @@ public class PortingLibMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitFrame(int type, int numLocal, Object[] local, int numStack, Object[] stack) {
-        Object[] newLocal = new Object[local.length];
-        Object[] newStack = new Object[stack.length];
         for (var replacement : PortingLibTransformer.REPLACEMENTS.entrySet()) {
             for (int i = 0; i < local.length; i++) {
                 if (local[i] instanceof String str) {

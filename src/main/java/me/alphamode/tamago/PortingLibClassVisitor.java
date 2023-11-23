@@ -4,9 +4,6 @@ import org.objectweb.asm.*;
 import org.spongepowered.asm.util.asm.ASM;
 
 public class PortingLibClassVisitor extends ClassVisitor {
-
-
-
     protected PortingLibClassVisitor(ClassVisitor visitor) {
         super(ASM.API_VERSION, visitor);
     }
@@ -23,21 +20,6 @@ public class PortingLibClassVisitor extends ClassVisitor {
             superName = superName.replace(replacement.getKey(), replacement.getValue());
         }
         super.visit(version, access, name, signature, superName, interfaces);
-    }
-
-    @Override
-    public void visitSource(String source, String debug) {
-        super.visitSource(source, debug);
-    }
-
-    @Override
-    public ModuleVisitor visitModule(String name, int access, String version) {
-        return super.visitModule(name, access, version);
-    }
-
-    @Override
-    public void visitNestHost(String nestHost) {
-        super.visitNestHost(nestHost);
     }
 
     @Override

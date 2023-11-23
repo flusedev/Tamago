@@ -6,13 +6,10 @@ import net.gudenau.minecraft.asm.api.v1.RawTransformer;
 import net.gudenau.minecraft.asm.api.v1.Transformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.FieldInsnNode;
 import org.spongepowered.asm.util.asm.ASM;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Map;
 
 public class PortingLibTransformer implements RawTransformer {
@@ -26,13 +23,12 @@ public class PortingLibTransformer implements RawTransformer {
             "io/github/fabricators_of_create/porting_lib/entity/events/EntityEvents$ProjectileImpact", "io/github/fabricators_of_create/porting_lib/entity/events/ProjectileImpactCallback",
             "io/github/fabricators_of_create/porting_lib/entity/events/player/PlayerTickEvents", "io/github/fabricators_of_create/porting_lib/entity/events/PlayerTickEvents",
             "io/github/fabricators_of_create/porting_lib/entity/events/player/PlayerEvents$BreakSpeed", "me/alphamode/tamago/Tamago$BreakSpeed",
-            "io/github/fabricators_of_create/porting_lib/entity/events/PlayerEvents$BreakSpeed", "me/alphamode/tamago/Tamago$BreakSpeed",
             "io/github/fabricators_of_create/porting_lib/entity/events/player/PlayerEvents", "io/github/fabricators_of_create/porting_lib/entity/events/PlayerEvents",
             "io/github/fabricators_of_create/porting_lib/entity/events/LivingEntityEvents$NaturalSpawn", "me/alphamode/tamago/Tamago$NaturalSpawn",
             "io/github/fabricators_of_create/porting_lib/entity/events/EntityEvents$ShieldBlock", "me/alphamode/tamago/Tamago$ShieldBlock",
             "io/github/fabricators_of_create/porting_lib/event/BaseEvent", "io/github/fabricators_of_create/porting_lib/core/event/BaseEvent",
-            "living/LivingEntityEvents$SetTarget", "MobEntitySetTargetCallback",
-            "events/LivingEntityEvents$SetTarget", "events/MobEntitySetTargetCallback"
+            "io/github/fabricators_of_create/porting_lib/entity/events/living/LivingEntityEvents$SetTarget", "me/alphamode/tamago/Tamago$SetTarget",
+            "io/github/fabricators_of_create/porting_lib/entity/events/LivingEntityEvents$SetTarget", "me/alphamode/tamago/Tamago$SetTarget"
     );
 
     private static Map<String, String> of(String ...entries) {
@@ -58,6 +54,8 @@ public class PortingLibTransformer implements RawTransformer {
         ClassReader reader = new ClassReader(classNode);
         ClassWriter writer = new ClassWriter(0);
         var portingLibVisitor = new PortingLibClassVisitor(writer);
+        if (reader.getClassName().startsWith("com/google"))
+            return classNode;
         reader.accept(portingLibVisitor, 0);
 //        for (var replacement : REPLACEMENTS.entrySet()) {
 //
@@ -94,24 +92,14 @@ public class PortingLibTransformer implements RawTransformer {
         node.methods.forEach(methodNode -> {
             methodNode.instructions.forEach(abstractInsnNode -> {
                 if (abstractInsnNode instanceof FieldInsnNode fieldInsnNode) {
-                    if (fieldInsnNode.name.equals("SET_TARGET")) {
-                        fieldInsnNode.owner = fieldInsnNode.owner.replace("LivingEntityEvents", "MobEntitySetTargetCallback");
-                        fieldInsnNode.name = "EVENT";
+                    if (fieldInsnNode.name.equals("SET_TARGET") && fieldInsnNode.owner.equals("io/github/fabricators_of_create/porting_lib/entity/events/LivingEntityEvents")) {
+                        fieldInsnNode.owner = "me/alphamode/tamago/Tamago";
                     }
                 }
             });
         });
         ClassWriter newWriter = new ClassWriter(ASM.API_VERSION);
         node.accept(newWriter);
-
-        var zlazz = Path.of("classes/" + reader.getClassName() + ".class");
-        zlazz.getParent().toFile().mkdirs();
-        try {
-            Files.write(zlazz, newWriter.toByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
 
         return newWriter.toByteArray();
     }

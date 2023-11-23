@@ -45,12 +45,27 @@ public class Tamago implements ModInitializer {
         PlayerEvents.BREAK_SPEED.register(event -> {
             event.setNewSpeed(BREAK_SPEED.invoker().modifyBreakSpeed(event.getPlayer(), event.getState(), event.getPos(), event.getNewSpeed()));
         });
+        MobEntitySetTargetCallback.EVENT.register((targeting, target) -> {
+            if (targeting instanceof Mob mob)
+                SET_TARGET.invoker().onMobEntitySetTarget(mob, target);
+        });
 
         SHIELD_BLOCK.register(event -> {
             var blockEvent = new io.github.fabricators_of_create.porting_lib.entity.events.ShieldBlockEvent(event.blocker, event.source, event.damageBlocked);
             blockEvent.sendEvent();
             event.setCanceled(blockEvent.isCanceled());
         });
+    }
+
+    public static final Event<SetTarget> SET_TARGET = EventFactory.createArrayBacked(SetTarget.class, callbacks -> (targeting, target) -> {
+        for (SetTarget callback : callbacks) {
+            callback.onMobEntitySetTarget(targeting, target);
+        }
+    });
+
+    @FunctionalInterface
+    public interface SetTarget {
+        void onMobEntitySetTarget(Mob targeting, @Nullable LivingEntity target);
     }
 
     /**

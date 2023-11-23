@@ -4,6 +4,7 @@
   "package": "me.alphamode.tamago.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EntityMixin",
     "LivingEntityMixin",
     "PersistentEntitySectionManager$CallbackMixin",
     "PortingLibHooksMixin",
