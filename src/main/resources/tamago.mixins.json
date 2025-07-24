@@ -4,20 +4,7 @@
   "package": "me.alphamode.tamago.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EntityMixin",
-    "LivingEntityMixin",
-    "PersistentEntitySectionManager$CallbackMixin",
-    "PortingLibHooksMixin",
-    "TransientEntitySectionManager$CallbackMixin",
-    "spawner.CatSpawnerMixin",
-    "spawner.NaturalSpawnerMixin",
-    "spawner.PatrolSpawnerMixin",
-    "spawner.PhantomSpawnerMixin",
-    "spawner.VillageSiegeMixin",
-    "spawner.WanderingTraderSpawnerMixin"
-  ],
-  "client": [
-    "BlockModelDeserializerMixin"
+    "PortingLibHooksMixin"
   ],
   "injectors": {
     "defaultRequire": 1

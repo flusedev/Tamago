@@ -3,9 +3,10 @@
   "id": "tamago",
   "version": "${version}",
   "name": "Tamago",
-  "description": "",
+  "description": "FTB Ultimine + Hephaetus (Tinkers' Construct Fabric) compat",
   "authors": [
-    "AlphaMode"
+    "AlphaMode",
+    "flusedev"
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/tamago",
@@ -18,9 +19,6 @@
   "entrypoints": {
     "main": [
       "me.alphamode.tamago.Tamago"
-    ],
-    "gud_asm": [
-      "me.alphamode.tamago.TamagoASM"
     ]
   },
   "mixins": [
